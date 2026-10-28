@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDUCREDS-LABS | Trust in every credential</title>
+    <meta
+      name="description"
+      content="EDUCREDS-LABS builds blockchain-powered infrastructure and AI verification tools for academic credentialing."
+    />
+    <style>
+      :root {
+        --bg: #040816;
+        --bg-alt: #0b1220;
+        --panel: rgba(15, 23, 42, 0.8);
+        --panel-solid: #0f172a;
+        --line: rgba(148, 163, 184, 0.18);
+        --line-strong: rgba(96, 165, 250, 0.35);
+        --text: #e5eefb;
+        --muted: #a7b5c9;
+        --cyan: #5ee7ff;
+        --cyan-strong: #18b7f2;
+        --violet: #8b5cf6;
+        --green: #34d399;
+        --shadow: rgba(18, 182, 242, 0.24);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(24, 183, 242, 0.18), transparent 26%),
+          radial-gradient(circle at top right, rgba(139, 92, 246, 0.12), transparent 30%),
+          var(--bg);
+        color: var(--text);
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--line);
+        background: rgba(4, 8, 22, 0.72);
+        backdrop-filter: blur(14px);
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 74px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        font-weight: 900;
+        color: #031521;
+        background: linear-gradient(135deg, var(--cyan), #a78bfa);
+        box-shadow: 0 0 0 1px rgba(94, 231, 255, 0.3), 0 20px 40px rgba(24, 183, 242, 0.2);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.05;
+      }
+
+      .brand-text strong {
+        font-size: 1.12rem;
+        letter-spacing: -0.04em;
+      }
+
+      .brand-text span {
+        font-size: 0.65rem;
+        color: var(--muted);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav a {
+        transition: color .2s ease;
+      }
+
+      .nav a:hover {
+        color: #fff;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0.82rem 1.35rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      }
+
+      .cta:hover {
+        transform: translateY(-1px);
+      }
+
+      .cta.primary {
+        background: linear-gradient(135deg, var(--cyan), #9ae6ff);
+        color: #07111d;
+        box-shadow: 0 12px 30px rgba(94, 231, 255, 0.2);
+      }
+
+      .cta.secondary {
+        border: 1px solid var(--line-strong);
+        background: rgba(15, 23, 42, 0.45);
+        color: var(--text);
+      }
+
+      .hero {
+        padding: 72px 0 60px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 48px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.52rem 0.85rem;
+        border: 1px solid rgba(94, 231, 255, 0.35);
+        border-radius: 999px;
+        background: rgba(24, 183, 242, 0.08);
+        color: #bfefff;
+        font-size: 0.71rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 20px 0 18px;
+        font-size: clamp(3rem, 5vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.07em;
+      }
+
+      .lead {
+        max-width: 640px;
+        color: var(--muted);
+        font-size: 1.18rem;
+        line-height: 1.73;
+      }
+
+      .hero-actions {
+        margin-top: 30px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .stats {
+        margin-top: 36px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        max-width: 560px;
+      }
+
+      .stat {
+        padding: 1.15rem 1rem;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.4);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: clamp(1.4rem, 2vw, 2rem);
+        letter-spacing: -0.05em;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .panel {
+        position: relative;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: rgba(15, 23, 42, 0.82);
+        box-shadow: 0 0 0 1px rgba(94, 231, 255, 0.06), 0 34px 80px rgba(6, 10, 22, 0.8);
+      }
+
+      .panel::before,
+      .panel::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(40px);
+        z-index: 0;
+      }
+
+      .panel::before {
+        top: -30px;
+        right: 40px;
+        width: 180px;
+        height: 180px;
+        background: rgba(24, 183, 242, 0.18);
+      }
+
+      .panel::after {
+        bottom: -24px;
+        left: 40px;
+        width: 180px;
+        height: 180px;
+        background: rgba(139, 92, 246, 0.12);
+      }
+
+      .panel-header,
+      .panel-body,
+      .card-grid,
+      .repo-card,
+      .footer-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .panel-header .meta {
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.7rem;
+      }
+
+      .live-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.42rem 0.7rem;
+        border: 1px solid rgba(52, 211, 153, 0.35);
+        border-radius: 999px;
+        background: rgba(52, 211, 153, 0.08);
+        color: #b7f4de;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .live-pill::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+      }
+
+      .panel-body {
+        padding-top: 20px;
+      }
+
+      .metric-card {
+        padding: 18px 16px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(2, 6, 23, 0.4);
+      }
+
+      .metric-tag {
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.64rem;
+      }
+
+      .metric-card strong {
+        display: block;
+        margin-top: 12px;
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        letter-spacing: -0.05em;
+      }
+
+      .metric-bar {
+        margin-top: 14px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(51, 65, 85, 0.9);
+        overflow: hidden;
+      }
+
+      .metric-bar span {
+        display: block;
+        height: 100%;
+        width: 98%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--cyan-strong), #8fd0ff, #a78bfa);
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .mini-card {
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.7);
+      }
+
+      .mini-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.12rem;
+      }
+
+      .mini-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.58;
+      }
+
+      section {
+        padding: 90px 0;
+      }
+
+      .section-head {
+        max-width: 700px;
+        margin-bottom: 34px;
+      }
+
+      .section-head .section-kicker {
+        color: #a8dfff;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 0.68rem;
+        font-weight: 700;
+      }
+
+      .section-head h2 {
+        margin: 14px 0 0;
+        font-size: clamp(2.2rem, 3vw, 3.5rem);
+        letter-spacing: -0.065em;
+      }
+
+      .mission-grid,
+      .platform-grid,
+      .repo-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .mission-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .info-card {
+        padding: 28px 22px;
+        background: rgba(9, 14, 26, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+      }
+
+      .step {
+        color: #c7eeff;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+      }
+
+      .info-card h3 {
+        margin: 18px 0 12px;
+        font-size: 1.45rem;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .platform-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .platform-card {
+        padding: 26px 22px;
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+      }
+
+      .platform-card .label {
+        display: inline-block;
+        color: #b4efff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .platform-card h3 {
+        margin: 16px 0 12px;
+        font-size: 1.8rem;
+        letter-spacing: -0.05em;
+      }
+
+      .platform-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .repo-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .repo-card {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        height: 100%;
+        padding: 22px 20px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(9, 14, 26, 0.72);
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      }
+
+      .repo-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(94, 231, 255, 0.44);
+        box-shadow: 0 16px 40px rgba(18, 182, 242, 0.12);
+      }
+
+      .repo-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .repo-name {
+        font-size: 1.5rem;
+        letter-spacing: -0.04em;
+      }
+
+      .repo-tag {
+        padding: 0.38rem 0.58rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .repo-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .repo-link {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #dff7ff;
+        font-weight: 700;
+      }
+
+      .repo-link::after {
+        content: "→";
+        transition: transform .2s ease;
+      }
+
+      .repo-card:hover .repo-link::after {
+        transform: translateX(4px);
+      }
+
+      .cta-band {
+        padding: 34px;
+        border: 1px solid var(--line-strong);
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(24, 183, 242, 0.09), rgba(139, 92, 246, 0.08));
+      }
+
+      .cta-band-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 28px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .cta-band h3 {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.06em;
+      }
+
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 26px 0 34px;
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: var(--muted);
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .mission-grid,
+        .platform-grid,
+        .repo-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .topbar-inner {
+          min-height: 68px;
+        }
+
+        .stats,
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding-top: 52px;
+        }
+
+        .panel {
+          padding: 18px;
+        }
+
+        .cta-band {
+          padding: 24px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="#top" class="brand" aria-label="EDUCREDS-LABS home">
+          <span class="brand-mark">E</span>
+          <span class="brand-text">
+            <strong>EDUCREDS</strong>
+            <span>LABS</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Main navigation">
+          <a href="#mission">Mission</a>
+          <a href="#platform">Platform</a>
+          <a href="#ecosystem">Ecosystem</a>
+          <a href="#repositories">Repositories</a>
+        </nav>
+
+        <a class="cta secondary" href="https://github.com/EDUCREDS-LABS" target="_blank" rel="noreferrer">
+          Explore GitHub
+        </a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">Blockchain infra for education</div>
+            <h1>Verify trust. Unlock opportunity.</h1>
+            <p class="lead">
+              EDUCREDS-LABS builds blockchain-powered infrastructure and AI-driven verification systems for academic credentialing,
+              helping institutions, students, and employers validate education records with confidence.
+            </p>
+
+            <div class="hero-actions">
+              <a class="cta primary" href="#platform">Learn the platform</a>
+              <a class="cta secondary" href="https://github.com/EDUCREDS-LABS/educreds-frontend" target="_blank" rel="noreferrer">
+                View frontend
+              </a>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>AI</strong>
+                <span>Trust engine</span>
+              </div>
+              <div class="stat">
+                <strong>On-chain</strong>
+                <span>Credential layer</span>
+              </div>
+              <div class="stat">
+                <strong>Enterprise</strong>
+                <span>Scale-ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" aria-label="System overview panel">
+            <div class="panel-header">
+              <div>
+                <div class="meta">System overview</div>
+                <div style="margin-top:8px; font-size:1.5rem; font-weight:700; letter-spacing:-0.05em;">EduCreds infrastructure</div>
+              </div>
+              <span class="live-pill">Active</span>
+            </div>
+
+            <div class="panel-body">
+              <div class="metric-card">
+                <div class="metric-tag">Credential verification</div>
+                <strong>98.4%</strong>
+                <div class="metric-bar"><span></span></div>
+              </div>
+
+              <div class="card-grid">
+                <div class="mini-card">
+                  <h3>Frontend</h3>
+                  <p>User interaction layer for credential experiences.</p>
+                </div>
+
+                <div class="mini-card">
+                  <h3>ETA</h3>
+                  <p>AI trust engine for verification and validation support.</p>
+                </div>
+              </div>
+
+              <div class="mini-card" style="margin-top:16px;">
+                <h3>Enterprise</h3>
+                <p>Decentralized education infrastructure designed for scale, trust, and institutional-grade workflows.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">Our mission</div>
+            <h2>Making academic credentials transparent, portable, and trustworthy.</h2>
+          </div>
+
+          <div class="mission-grid">
+            <article class="info-card">
+              <div class="step">01</div>
+              <h3>Trust by design</h3>
+              <p>Credential infrastructure built for verification, integrity, and institutional confidence.</p>
+            </article>
+
+            <article class="info-card">
+              <div class="step">02</div>
+              <h3>AI-powered checks</h3>
+              <p>Intelligent validation workflows reduce fraud and improve confidence in education systems.</p>
+            </article>
+
+            <article class="info-card">
+              <div class="step">03</div>
+              <h3>Built for scale</h3>
+              <p>From student experience to enterprise-grade architecture, we’re building robust credential ecosystems.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="platform" style="background: rgba(15, 23, 42, 0.46); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">Platform</div>
+            <h2>Purpose-built for the future of education credentials.</h2>
+          </div>
+
+          <div class="platform-grid">
+            <article class="platform-card">
+              <div class="label">Frontend</div>
+              <h3>educreds-frontend</h3>
+              <p>A user-facing experience layer connecting people to the credential ecosystem through intuitive interactions.</p>
+            </article>
+
+            <article class="platform-card">
+              <div class="label">AI trust engine</div>
+              <h3>ETA</h3>
+              <p>A modular AI solution designed to support trust, verification, and academic credential evaluation workflows.</p>
+            </article>
+
+            <article class="platform-card">
+              <div class="label">Enterprise</div>
+              <h3>educreds-enterprise</h3>
+              <p>An enterprise-grade, decentralized education credential system for secure, scalable institutional deployment.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="ecosystem">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">Ecosystem</div>
+            <h2>Building the trusted layer for academic identity.</h2>
+          </div>
+
+          <div class="repo-grid" id="repositories">
+            <a class="repo-card" href="https://github.com/EDUCREDS-LABS/educreds-frontend" target="_blank" rel="noreferrer">
+              <div class="repo-card-head">
+                <div class="repo-name">educreds-frontend</div>
+                <span class="repo-tag">TypeScript</span>
+              </div>
+              <p>The interaction layer for users across the credential platform, designed for a secure and intuitive experience.</p>
+              <span class="repo-link">Open repository</span>
+            </a>
+
+            <a class="repo-card" href="https://github.com/EDUCREDS-LABS/eta" target="_blank" rel="noreferrer">
+              <div class="repo-card-head">
+                <div class="repo-name">eta</div>
+                <span class="repo-tag">AI Engine</span>
+              </div>
+              <p>A modular AI trust engine focused on academic credential verification and decision support.</p>
+              <span class="repo-link">Open repository</span>
+            </a>
+
+            <a class="repo-card" href="https://github.com/EDUCREDS-LABS" target="_blank" rel="noreferrer">
+              <div class="repo-card-head">
+                <div class="repo-name">GitHub org</div>
+                <span class="repo-tag">Explore</span>
+              </div>
+              <p>Discover the broader EDUCREDS-LABS ecosystem, active repositories, and ongoing platform development.</p>
+              <span class="repo-link">View organization</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="cta-band">
+            <div class="cta-band-inner">
+              <h3>Explore the work behind the platform.</h3>
+              <a class="cta primary" href="https://github.com/EDUCREDS-LABS" target="_blank" rel="noreferrer">
+                Explore GitHub org
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>© 2026 EDUCREDS-LABS</div>
+        <div class="footer-links">
+          <a href="https://github.com/EDUCREDS-LABS" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://www.educreds.xyz" target="_blank" rel="noreferrer">Website</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
